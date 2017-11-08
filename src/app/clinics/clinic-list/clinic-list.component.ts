@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Clinic } from 'app/clinics/clinics.model';
+import { ClinicsService } from 'app/clinics/clinics.service';
 
 @Component({
   selector: 'app-clinic-list',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ClinicListComponent implements OnInit {
 
-  constructor() { }
+  clinics: Clinic[] = [];
+
+  constructor(private clinicsService: ClinicsService) { }
 
   ngOnInit() {
+    this.clinicsService.getAll().subscribe((clinics)=> {
+      this.clinics = clinics;
+    });
   }
+
+
 
 }

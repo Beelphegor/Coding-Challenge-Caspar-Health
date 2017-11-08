@@ -10,5 +10,9 @@ export class ClinicsService {
     create(clinic: Clinic) {
         return this.http.post('clinic', clinic);
     }
+
+    getAll() {
+        return this.http.get('clinics');
+    }
     
 }

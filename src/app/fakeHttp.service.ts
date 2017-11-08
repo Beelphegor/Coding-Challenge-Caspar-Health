@@ -6,13 +6,22 @@ export class FakeHttp {
         const postSubject = new Subject<any>();
         switch (path) {
             case 'clinic':
-            this.createClinic(postSubject, data);
+                this.createClinic(postSubject, data);
                 break;
         
             default:
                 break;
         }
         return postSubject;
+    }
+
+    get(path: string) {
+        const getSubject = new Subject<any>();
+        switch (path) {
+            case 'clinics':
+                this.getClinics(getSubject);
+        }
+        return getSubject;
     }
 
     //Fake server Implementations
@@ -23,6 +32,14 @@ export class FakeHttp {
         setTimeout(() => { 
             postSubject.next(data);
             postSubject.complete();
+        }, 200);
+    }
+
+    private getClinics(getSubject: Subject<any>) {
+        let clinics = JSON.parse(localStorage['clinics']);
+        setTimeout(() => {
+            getSubject.next(clinics);
+            getSubject.complete();
         }, 200);
     }
 }
