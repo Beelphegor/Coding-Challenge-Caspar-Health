@@ -15,6 +15,8 @@ import { TherapistListComponent } from './therapists/therapist-list/therapist-li
 import { PatientListComponent } from './patients/patient-list/patient-list.component';
 import { PatientNewComponent } from './patients/patient-new/patient-new.component';
 import { ClinicEditComponent } from './clinics/clinic-edit/clinic-edit.component';
+import { FakeHttp } from 'app/fakeHttp.service';
+import { ClinicsService } from 'app/clinics/clinics.service';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,7 @@ import { ClinicEditComponent } from './clinics/clinic-edit/clinic-edit.component
     HttpModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [FakeHttp, ClinicsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

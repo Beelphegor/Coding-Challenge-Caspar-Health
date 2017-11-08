@@ -6,5 +6,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app works!';
+  constructor() {
+    if(!localStorage.getItem('clinics')) {
+      localStorage.setItem('clinics', JSON.stringify([]));
+      localStorage.setItem('therapists', JSON.stringify([]));
+      localStorage.setItem('patients', JSON.stringify([]));
+      localStorage.setItem('clinics-patients', JSON.stringify([]));
+      localStorage.setItem('clinics-therapists', JSON.stringify([]));
+      localStorage.setItem('therapists-patients', JSON.stringify([]));
+    }
+  }
 }
