@@ -8,13 +8,27 @@ import { ClinicsComponent } from './clinics/clinics.component';
 import { PatientsComponent } from './patients/patients.component';
 import { TherapistsComponent } from './therapists/therapists.component';
 import { AppRoutingModule } from 'app/app-routing.module';
+import { ClinicNewComponent } from './clinics/clinic-new/clinic-new.component';
+import { ClinicListComponent } from './clinics/clinic-list/clinic-list.component';
+import { TherapistNewComponent } from './therapists/therapist-new/therapist-new.component';
+import { TherapistListComponent } from './therapists/therapist-list/therapist-list.component';
+import { PatientListComponent } from './patients/patient-list/patient-list.component';
+import { PatientNewComponent } from './patients/patient-new/patient-new.component';
+import { ClinicEditComponent } from './clinics/clinic-edit/clinic-edit.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ClinicsComponent,
     PatientsComponent,
-    TherapistsComponent
+    TherapistsComponent,
+    ClinicNewComponent,
+    ClinicListComponent,
+    TherapistNewComponent,
+    TherapistListComponent,
+    PatientListComponent,
+    PatientNewComponent,
+    ClinicEditComponent
   ],
   imports: [
     BrowserModule,
