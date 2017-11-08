@@ -6,33 +6,32 @@
   </div>
   <h2>Clinics</h2>
 </div>
-
 <div *ngIf="!clinics.length; else clinicsTable">
   <p>No clinics yet, create new clinic to start</p>
 </div>
 <ng-template #clinicsTable>
-    <table class="table table-striped" >
-        <thead>
-          <th class="col-xs-4">Name</th>
-          <th class="col-xs-6">Address</th>
-          <th class="col-xs-1"></th>
-          <th class="col-xs-1"></th>
-        </thead>
-        <tbody>
-          <tr *ngFor="let clinic of clinics">
-            <td>{{clinic.name}}</td>
-            <td>{{clinic.address}}</td>
-            <td>
-              <button class="btn btn-warning" type="button">
-                <span class="glyphicon glyphicon-pencil"></span>
-              </button>
-            </td>
-            <td>
-              <button class="btn btn-danger" type="button" (click)="onDelete(clinic.id)">
-                <span class="glyphicon glyphicon-trash"></span>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  <table class="table table-striped">
+    <thead>
+      <th class="col-xs-4">Name</th>
+      <th class="col-xs-6">Address</th>
+      <th class="col-xs-1"></th>
+      <th class="col-xs-1"></th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let clinic of clinics">
+        <td>{{clinic.name}}</td>
+        <td>{{clinic.address}}</td>
+        <td>
+          <button class="btn btn-warning" type="button">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-danger" type="button" (click)="onDelete(clinic.id)">
+            <span class="glyphicon glyphicon-trash"></span>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </ng-template>

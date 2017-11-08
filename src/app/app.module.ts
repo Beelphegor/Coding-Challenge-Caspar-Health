@@ -17,6 +17,7 @@ import { PatientNewComponent } from './patients/patient-new/patient-new.componen
 import { ClinicEditComponent } from './clinics/clinic-edit/clinic-edit.component';
 import { FakeHttp } from 'app/fakeHttp.service';
 import { ClinicsService } from 'app/clinics/clinics.service';
+import { PatientsService } from 'app/patients/patients.service';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,7 @@ import { ClinicsService } from 'app/clinics/clinics.service';
     HttpModule,
     AppRoutingModule
   ],
-  providers: [FakeHttp, ClinicsService],
+  providers: [FakeHttp, ClinicsService, PatientsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

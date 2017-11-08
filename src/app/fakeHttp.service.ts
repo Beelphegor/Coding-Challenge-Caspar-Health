@@ -1,5 +1,6 @@
 import { Subject } from "rxjs/Subject";
 import { Clinic } from "app/clinics/clinics.model";
+import { Patient } from "app/patients/patient.model";
 
 export class FakeHttp {
     post(path: string, data: any) {
@@ -8,7 +9,9 @@ export class FakeHttp {
             case 'clinics':
                 this.createClinic(postSubject, data);
                 break;
-        
+            case 'patients':
+                this.createPatient(postSubject, data);
+                break;
             default:
                 break;
         }
@@ -38,6 +41,7 @@ export class FakeHttp {
     }
 
     //Fake server Implementations
+    //CLINICS
     private createClinic(postSubject: Subject<any>, data) {
         let clinics = JSON.parse(localStorage['clinics']);
         clinics.push(new Clinic(data.name, data.address, (new Date()).getTime().toString()));
@@ -65,6 +69,17 @@ export class FakeHttp {
         setTimeout(() => { 
             deleteSubject.next(data);
             deleteSubject.complete();
+        }, 200);
+    }
+
+     //PATIENTS    
+     private createPatient(postSubject: Subject<any>, data) {
+        let patients = JSON.parse(localStorage['patients']);
+        patients.push(new Patient(data.firstName, data.lastName, data.birthDate, data.gender, (new Date()).getTime().toString()));
+        localStorage.setItem('patients', JSON.stringify(patients));
+        setTimeout(() => { 
+            postSubject.next(data);
+            postSubject.complete();
         }, 200);
     }
 }

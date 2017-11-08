@@ -1,3 +1,43 @@
-<p>
-  patient-new works!
-</p>
+<form (submit)="onSubmit(f)" #f="ngForm">
+  <div class="row">
+    <div class="col-xs-6 col-xs-offset-3">
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input type="text" class="form-control" name="firstName" ngModel required>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-6 col-xs-offset-3">
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input type="text" class="form-control" name="lastName" ngModel required>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+      <div class="col-xs-6 col-xs-offset-3">
+        <div class="form-group">
+          <label for="birtDate">Birth Date</label>
+          <input type="date" class="form-control" name="birthDate" ngModel required>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-2 col-xs-offset-3">
+          <div class="form-group">
+            <label for="gender">Gender</label>
+            <select name="gender" class="form-control" ngModel required>
+              <option value="M">M</option>
+              <option value="F">F</option>
+            </select>
+          </div>
+        </div>
+      </div>
+  <div class="row">
+    <div class="col-xs-6 col-xs-offset-3">
+      <button class="btn btn-primary" [disabled]="f.invalid" type="submit">Create</button>
+      <button class="btn btn-danger" routerLink="/clinics" type="button">Cancel</button>
+    </div>
+  </div>
+</form>
