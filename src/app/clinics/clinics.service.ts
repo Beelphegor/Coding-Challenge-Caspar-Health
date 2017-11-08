@@ -8,11 +8,15 @@ export class ClinicsService {
     constructor(private http: FakeHttp) { }
 
     create(clinic: Clinic) {
-        return this.http.post('clinic', clinic);
+        return this.http.post('clinics', clinic);
     }
 
     getAll() {
         return this.http.get('clinics');
+    }
+
+    delete(id: string) {
+        return this.http.delete('clinics', id);
     }
     
 }
