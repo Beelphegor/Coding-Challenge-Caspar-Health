@@ -22,6 +22,7 @@ import { TherapistsService } from 'app/therapists/therapists.service';
 import { AngularDualListBoxModule } from 'angular-dual-listbox';
 import { TherapistEditComponent } from './therapists/therapist-edit/therapist-edit.component';
 import { PatientEditComponent } from './patients/patient-edit/patient-edit.component';
+import { BirthDateValidator } from 'app/validators/birthDate.validator';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { PatientEditComponent } from './patients/patient-edit/patient-edit.compo
     PatientNewComponent,
     ClinicEditComponent,
     TherapistEditComponent,
-    PatientEditComponent
+    PatientEditComponent,
+    BirthDateValidator
   ],
   imports: [
     BrowserModule,

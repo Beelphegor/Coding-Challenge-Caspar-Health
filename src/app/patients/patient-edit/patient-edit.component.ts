@@ -18,13 +18,13 @@ export class PatientEditComponent implements OnInit {
   linkedTherapists: Therapist[] = [];
 
   constructor(
-    private patientsService: PatientsService, 
+    private patientsService: PatientsService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
 
   ngOnInit() {
-    this.route.params.subscribe((params: Params) =>  {
+    this.route.params.subscribe((params: Params) => {
 
       this.patientsService.get(params['id']).subscribe((patient: Patient) => {
         this.patient = patient;
@@ -36,7 +36,7 @@ export class PatientEditComponent implements OnInit {
           birthDate: patient.birthDate,
           gender: patient.gender
         });
-      });    
+      });
     });
   }
 
@@ -47,7 +47,7 @@ export class PatientEditComponent implements OnInit {
     this.patient.gender = form.value.gender;
     this.patient.fullName = `${form.value.lastName}, ${form.value.firstName}`
 
-    this.patientsService.put(this.patient).subscribe((patient)=> {
+    this.patientsService.put(this.patient).subscribe((patient) => {
       console.log(patient);
       this.router.navigate(['/patients']);
     });

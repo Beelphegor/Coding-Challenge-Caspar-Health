@@ -19,7 +19,8 @@
       <div class="col-xs-6 col-xs-offset-3">
         <div class="form-group">
           <label for="birtDate">Birth Date</label>
-          <input type="date" class="form-control" name="birthDate" ngModel required>
+          <input type="date" class="form-control" name="birthDate" ngModel required birthDate #birthDate="ngModel">
+          <span class="help-block" *ngIf="birthDate.invalid && birthDate.touched && birthDate.errors.birthDate">The birth date must be in the past</span>
         </div>
       </div>
     </div>
