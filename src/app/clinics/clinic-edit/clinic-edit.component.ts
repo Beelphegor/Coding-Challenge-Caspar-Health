@@ -72,8 +72,7 @@ export class ClinicEditComponent implements OnInit {
     this.clinicsService.put(this.clinic).subscribe((clinic)=> {
       console.log(clinic);
       this.router.navigate(['/clinics']);
-    })
-    
+    });
   }
 
 }

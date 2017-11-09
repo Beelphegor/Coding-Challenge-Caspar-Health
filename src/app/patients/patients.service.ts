@@ -18,5 +18,13 @@ export class PatientsService {
     delete(id: string) {
         return this.http.delete('patients', id);
     }
+
+    get(id: string) {
+        return this.http.get('patients', id);
+    }
+
+    put(patient: Patient) {
+        return this.http.put('patients', patient);
+    }
     
 }

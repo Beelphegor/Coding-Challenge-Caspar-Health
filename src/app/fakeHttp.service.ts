@@ -29,7 +29,7 @@ export class FakeHttp {
                 this.getClinics(getSubject, data);
                 break;
             case 'patients':
-                this.getPatients(getSubject);
+                this.getPatients(getSubject, data);
                 break;
             case 'therapists':
                 this.getTherapists(getSubject, data);
@@ -65,10 +65,10 @@ export class FakeHttp {
                 this.updateClinic(putSubject, data);
                 break;
             case 'patients':
-                this.deletePatients(putSubject, data);
+                this.updatePatient(putSubject, data);
                 break;
             case 'therapists':
-                this.updateTherapists(putSubject, data);
+                this.updateTherapist(putSubject, data);
                 break;
             default:
                 break;
@@ -173,8 +173,33 @@ export class FakeHttp {
         }, 200);
     }
 
-    private getPatients(getSubject: Subject<any>) {
-        let patients = JSON.parse(localStorage['patients']);
+    private getPatients(getSubject: Subject<any>, data?: string) {
+        let patients = JSON.parse(localStorage['patients']).sort((a, b)=> { return a.id - b.id});
+        if(data) {
+            patients = patients.filter((c) => {
+                return c.id === data;
+            })[0];
+            
+            const therapists_patients = (JSON.parse(localStorage['therapists-patients'])).filter((tp) => {
+                return tp.patient_id === data;
+            });
+            const clinics_patients = (JSON.parse(localStorage['clinics-patients'])).filter((cp) => {
+                return cp.patient_id === data;
+            });
+            let allTherapists = JSON.parse(localStorage['therapists']);
+            let allClinics = JSON.parse(localStorage['clinics']);
+
+            patients['therapists'] = allTherapists.filter((t: Therapist) => {
+                return therapists_patients.map((tp) => {
+                    return tp.therapist_id;
+                }).indexOf(t.id) > -1;
+            });
+            patients['clinics'] = allClinics.filter((t: Clinic) => {
+                return clinics_patients.map((cp) => {
+                    return cp.clinic_id;
+                }).indexOf(t.id) > -1;
+            });
+        }
         setTimeout(() => {
             getSubject.next(patients);
             getSubject.complete();
@@ -182,7 +207,7 @@ export class FakeHttp {
     }
 
     private deletePatients(deleteSubject: Subject<any>, data: string) {
-        let patients: Clinic[] = JSON.parse(localStorage['patients']);
+        let patients: Patient[] = JSON.parse(localStorage['patients']);
         let newPatients = patients.filter((c) => {
             return c.id !== data;
         });
@@ -192,6 +217,20 @@ export class FakeHttp {
             deleteSubject.complete();
         }, 200);
     }
+
+    private updatePatient(putSubject: Subject<any>, data: Patient) {
+        let patients: Patient[] = JSON.parse(localStorage['patients']);
+        let newPatients = patients.filter((c) => {
+            return c.id !== data.id;
+        });
+        newPatients.push(data);
+        localStorage.setItem('patients', JSON.stringify(newPatients));
+        setTimeout(() => {
+            putSubject.next(data);
+            putSubject.complete();
+        }, 200);
+    }
+
 
      //THERAPISTS    
      private createTherapist(postSubject: Subject<any>, data) {
@@ -239,7 +278,7 @@ export class FakeHttp {
         }, 200);
     }
 
-    private updateTherapists(putSubject: Subject<any>, data: Therapist) {
+    private updateTherapist(putSubject: Subject<any>, data: Therapist) {
         let therapists = JSON.parse(localStorage['therapists']);
         let newTherapists = therapists.filter((c) => { return c.id !== data.id; });
 
