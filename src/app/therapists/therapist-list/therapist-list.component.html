@@ -20,11 +20,11 @@
     </thead>
     <tbody>
       <tr *ngFor="let therapist of therapists">
-        <td>{{therapist.lastName}}, {{therapist.firstName}}</td>
+        <td>{{therapist.fullName}}</td>
         <td class="text-align-center">{{therapist.birthDate}}</td>
         <td class="text-align-center">{{therapist.gender}}</td>
         <td>
-          <button class="btn btn-warning" type="button">
+          <button class="btn btn-warning" type="button" routerLink="/therapists/{{therapist.id}}/edit">
             <span class="glyphicon glyphicon-pencil"></span>
           </button>
         </td>

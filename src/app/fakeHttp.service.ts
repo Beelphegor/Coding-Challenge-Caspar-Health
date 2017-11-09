@@ -32,7 +32,7 @@ export class FakeHttp {
                 this.getPatients(getSubject);
                 break;
             case 'therapists':
-                this.getTherapists(getSubject);
+                this.getTherapists(getSubject, data);
                 break;
             default:
                 break;
@@ -68,7 +68,7 @@ export class FakeHttp {
                 this.deletePatients(putSubject, data);
                 break;
             case 'therapists':
-                this.deleteTherapists(putSubject, data);
+                this.updateTherapists(putSubject, data);
                 break;
             default:
                 break;
@@ -89,7 +89,7 @@ export class FakeHttp {
     }
 
     private getClinics(getSubject: Subject<any>, data?: string) {
-        let clinics = JSON.parse(localStorage['clinics']);
+        let clinics = JSON.parse(localStorage['clinics']).sort((a, b)=> { return a.id - b.id});
         if(data) {
             clinics = clinics.filter((c) => {
                 return c.id === data;
@@ -164,7 +164,7 @@ export class FakeHttp {
 
     //PATIENTS    
     private createPatient(postSubject: Subject<any>, data) {
-        let patients = JSON.parse(localStorage['patients']);
+        let patients = JSON.parse(localStorage['patients']).sort((a, b)=> { return a.id - b.id});
         patients.push(new Patient(data.firstName, data.lastName, data.birthDate, data.gender, (new Date()).getTime().toString()));
         localStorage.setItem('patients', JSON.stringify(patients));
         setTimeout(() => {
@@ -204,8 +204,23 @@ export class FakeHttp {
         }, 200);
     }
 
-    private getTherapists(getSubject: Subject<any>) {
-        let therapists = JSON.parse(localStorage['therapists']);
+    private getTherapists(getSubject: Subject<any>, data?: string) {
+
+        let therapists = JSON.parse(localStorage['therapists']).sort((a, b)=> { return a.id - b.id});
+        if(data) {
+            therapists = therapists.filter((t) => {
+                return t.id === data;
+            })[0];
+
+            const therapists_patients = (JSON.parse(localStorage['therapists-patients'])).filter((tp) => {
+                return tp.therapist_id === data;
+            });
+
+            therapists['patients'] = therapists_patients.map((cp)=> {
+                return cp.patient_id;
+            });
+        }
+
         setTimeout(() => {
             getSubject.next(therapists);
             getSubject.complete();
@@ -221,6 +236,32 @@ export class FakeHttp {
         setTimeout(() => {
             deleteSubject.next(data);
             deleteSubject.complete();
+        }, 200);
+    }
+
+    private updateTherapists(putSubject: Subject<any>, data: Therapist) {
+        let therapists = JSON.parse(localStorage['therapists']);
+        let newTherapists = therapists.filter((c) => { return c.id !== data.id; });
+
+        let therapists_patients = JSON.parse(localStorage['therapists-patients']);
+
+        let new_therapists_patients = therapists_patients.filter((tp) => { return tp.therapist_id !== data.id });
+
+        let therapists_patients_to_add = data.patients.map((p) => {
+            return {therapist_id: data.id, patient_id: p};
+        });
+
+        delete data.patients;
+
+        newTherapists.push(data);
+        new_therapists_patients = new_therapists_patients.concat(therapists_patients_to_add);
+                
+        localStorage.setItem('therapists', JSON.stringify(newTherapists));
+        localStorage.setItem('therapists-patients', JSON.stringify(new_therapists_patients));
+
+        setTimeout(() => {
+            putSubject.next(data);
+            putSubject.complete();
         }, 200);
     }
 }

@@ -18,5 +18,13 @@ export class TherapistsService {
     delete(id: string) {
         return this.http.delete('therapists', id);
     }
+
+    get(id: string) {
+        return this.http.get('therapists', id);
+    }
+
+    put(therapist: Therapist) {
+        return this.http.put('therapists', therapist);
+    }
     
 }

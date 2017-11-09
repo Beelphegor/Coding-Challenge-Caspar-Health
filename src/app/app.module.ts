@@ -20,6 +20,7 @@ import { ClinicsService } from 'app/clinics/clinics.service';
 import { PatientsService } from 'app/patients/patients.service';
 import { TherapistsService } from 'app/therapists/therapists.service';
 import { AngularDualListBoxModule } from 'angular-dual-listbox';
+import { TherapistEditComponent } from './therapists/therapist-edit/therapist-edit.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { AngularDualListBoxModule } from 'angular-dual-listbox';
     TherapistListComponent,
     PatientListComponent,
     PatientNewComponent,
-    ClinicEditComponent
+    ClinicEditComponent,
+    TherapistEditComponent
   ],
   imports: [
     BrowserModule,

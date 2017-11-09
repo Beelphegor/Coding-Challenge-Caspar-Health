@@ -11,6 +11,7 @@ import { TherapistListComponent } from "app/therapists/therapist-list/therapist-
 import { TherapistNewComponent } from "app/therapists/therapist-new/therapist-new.component";
 import { PatientNewComponent } from "app/patients/patient-new/patient-new.component";
 import { ClinicEditComponent } from "app/clinics/clinic-edit/clinic-edit.component";
+import { TherapistEditComponent } from "app/therapists/therapist-edit/therapist-edit.component";
 
 const appRoutes: Routes = [{
     path: '',
@@ -36,7 +37,8 @@ const appRoutes: Routes = [{
     component: TherapistsComponent,
     children: [
         { path: '', component: TherapistListComponent },
-        { path: 'new', component: TherapistNewComponent }
+        { path: 'new', component: TherapistNewComponent },
+        { path: ':id/edit', component: TherapistEditComponent }
     ]
 }];
 

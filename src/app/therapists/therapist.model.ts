@@ -4,6 +4,7 @@ export class Therapist {
     public fullName: string;
     public birthDate: Date;
     public gender: string;
+    public patients: string[];
     public id: string;
 
     constructor(firstName: string, lastName: string, birthDate: Date, gender: string, id: string) {
