@@ -18,5 +18,13 @@ export class ClinicsService {
     delete(id: string) {
         return this.http.delete('clinics', id);
     }
+
+    get(id: string) {
+        return this.http.get('clinics', id);
+    }
+
+    put(clinic: Clinic) {
+        return this.http.put('clinics', clinic);
+    }
     
 }

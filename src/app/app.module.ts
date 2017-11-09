@@ -19,6 +19,7 @@ import { FakeHttp } from 'app/fakeHttp.service';
 import { ClinicsService } from 'app/clinics/clinics.service';
 import { PatientsService } from 'app/patients/patients.service';
 import { TherapistsService } from 'app/therapists/therapists.service';
+import { AngularDualListBoxModule } from 'angular-dual-listbox';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { TherapistsService } from 'app/therapists/therapists.service';
     BrowserModule,
     FormsModule,
     HttpModule,
-    AppRoutingModule
+    AppRoutingModule,
+    AngularDualListBoxModule 
   ],
   providers: [FakeHttp, ClinicsService, PatientsService, TherapistsService],
   bootstrap: [AppComponent]

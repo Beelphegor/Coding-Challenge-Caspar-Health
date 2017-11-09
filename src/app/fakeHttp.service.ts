@@ -22,11 +22,11 @@ export class FakeHttp {
         return postSubject;
     }
 
-    get(path: string) {
+    get(path: string, data?: string) {
         const getSubject = new Subject<any>();
         switch (path) {
             case 'clinics':
-                this.getClinics(getSubject);
+                this.getClinics(getSubject, data);
                 break;
             case 'patients':
                 this.getPatients(getSubject);
@@ -58,9 +58,27 @@ export class FakeHttp {
         return deleteSubject;
     }
 
+    put(path: string, data: any) {
+        const putSubject = new Subject<any>();
+        switch (path) {
+            case 'clinics':
+                this.updateClinic(putSubject, data);
+                break;
+            case 'patients':
+                this.deletePatients(putSubject, data);
+                break;
+            case 'therapists':
+                this.deleteTherapists(putSubject, data);
+                break;
+            default:
+                break;
+        }
+        return putSubject;
+    }
+
     //Fake server Implementations
     //CLINICS
-    private createClinic(postSubject: Subject<any>, data) {
+    private createClinic(postSubject: Subject<any>, data: Clinic) {
         let clinics = JSON.parse(localStorage['clinics']);
         clinics.push(new Clinic(data.name, data.address, (new Date()).getTime().toString()));
         localStorage.setItem('clinics', JSON.stringify(clinics));
@@ -70,8 +88,21 @@ export class FakeHttp {
         }, 200);
     }
 
-    private getClinics(getSubject: Subject<any>) {
+    private getClinics(getSubject: Subject<any>, data?: string) {
         let clinics = JSON.parse(localStorage['clinics']);
+        if(data) {
+            clinics = clinics.filter((c) => {
+                return c.id === data;
+            })[0];
+            
+            const clinics_therapists = (JSON.parse(localStorage['clinics-therapists'])).filter((ct) => {
+                return ct.clinic_id === data;
+            });
+
+            clinics['therapists'] = clinics_therapists.map((ct)=> {
+                return ct.therapist_id;
+            });
+        }
         setTimeout(() => {
             getSubject.next(clinics);
             getSubject.complete();
@@ -87,6 +118,28 @@ export class FakeHttp {
         setTimeout(() => {
             deleteSubject.next(data);
             deleteSubject.complete();
+        }, 200);
+    }
+
+    private updateClinic(putSubject: Subject<any>, data: Clinic) {
+        let clinics = JSON.parse(localStorage['clinics']);
+        let newClinics = clinics.filter((c) => { return c.id !== data.id; });
+
+        let clinics_therapists = JSON.parse(localStorage['clinics-therapists']);
+        let new_clinics_therapists = clinics_therapists.filter((ct) => { return ct.clinic_id !== data.id });
+        let clinics_therapists_to_add = data.therapists.map((t) => {
+            return {clinic_id: data.id, therapist_id: t};
+        });
+        delete data.therapists;
+        newClinics.push(data);
+        new_clinics_therapists = new_clinics_therapists.concat(clinics_therapists_to_add);
+                
+        localStorage.setItem('clinics', JSON.stringify(newClinics));
+        localStorage.setItem('clinics-therapists', JSON.stringify(new_clinics_therapists));
+
+        setTimeout(() => {
+            putSubject.next(data);
+            putSubject.complete();
         }, 200);
     }
 

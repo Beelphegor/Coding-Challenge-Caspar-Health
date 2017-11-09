@@ -1,4 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ClinicsService } from 'app/clinics/clinics.service';
+import { TherapistsService } from 'app/therapists/therapists.service';
+import { PatientsService } from 'app/patients/patients.service';
+import { Clinic } from 'app/clinics/clinics.model';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
+import { Therapist } from 'app/therapists/therapist.model';
 
 @Component({
   selector: 'app-clinic-edit',
@@ -6,10 +13,52 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./clinic-edit.component.css']
 })
 export class ClinicEditComponent implements OnInit {
+  @ViewChild('f') form: NgForm;
+  clinic: Clinic;
+  availableTherapists =  [];
+  linkedTherapists =  [];
 
-  constructor() { }
+  constructor(
+    private clinicsService: ClinicsService, 
+    private patientsService: PatientsService, 
+    private therapistsService: TherapistsService, 
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
 
   ngOnInit() {
+    this.route.params.subscribe((params: Params) =>  {
+      this.clinicsService.get(params['id']).subscribe((clinic: Clinic) => {
+        console.log(clinic);
+        this.clinic = clinic;
+        this.form.setValue({
+          name: clinic.name,
+          address: clinic.address
+        });
+
+        this.therapistsService.getAll().subscribe((therapists)=> {
+          let linkedTherapists = therapists.filter((t: Therapist) =>  {
+            return clinic.therapists.indexOf(t.id) > -1;
+          });
+          this.availableTherapists = therapists;
+          this.linkedTherapists = linkedTherapists;
+        });
+
+      });    
+    });
+  }
+
+  onSubmit(form: NgForm) {
+    this.clinic.name = form.value.name;
+    this.clinic.address = form.value.address;
+    this.clinic.therapists = this.linkedTherapists.map((t: Therapist) => {
+      return t.id;
+    });
+    this.clinicsService.put(this.clinic).subscribe((clinic)=> {
+      console.log(clinic);
+      this.router.navigate(['/clinics']);
+    })
+    
   }
 
 }
