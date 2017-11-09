@@ -23,6 +23,10 @@ export class FakeHttp {
         switch (path) {
             case 'clinics':
                 this.getClinics(getSubject);
+                break;
+            case 'patients':
+                this.getPatients(getSubject);
+                break;
         }
         return getSubject;
     }
@@ -33,7 +37,9 @@ export class FakeHttp {
             case 'clinics':
                 this.deleteClinics(deleteSubject, data);
                 break;
-        
+            case 'patients':
+                this.deletePatients(deleteSubject, data);
+                break;
             default:
                 break;
         }
@@ -80,6 +86,26 @@ export class FakeHttp {
         setTimeout(() => { 
             postSubject.next(data);
             postSubject.complete();
+        }, 200);
+    }
+
+    private getPatients(getSubject: Subject<any>) {
+        let patients = JSON.parse(localStorage['patients']);
+        setTimeout(() => {
+            getSubject.next(patients);
+            getSubject.complete();
+        }, 200);
+    }
+
+    private deletePatients(deleteSubject: Subject<any>, data: string) {
+        let patients: Clinic[] = JSON.parse(localStorage['patients']);
+        let newPatients = patients.filter((c)=> {
+            return c.id !== data;
+        });
+        localStorage.setItem('patients', JSON.stringify(newPatients));
+        setTimeout(() => { 
+            deleteSubject.next(data);
+            deleteSubject.complete();
         }, 200);
     }
 }

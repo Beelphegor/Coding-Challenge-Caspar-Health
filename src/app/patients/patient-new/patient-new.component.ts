@@ -17,7 +17,6 @@ export class PatientNewComponent implements OnInit {
 
   onSubmit(form: NgForm) {
     this.patientsService.create(form.value).subscribe((patient) => {
-      console.log(patient);
       this.router.navigate(['/patients']);
     });
   }

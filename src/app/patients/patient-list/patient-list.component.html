@@ -6,3 +6,34 @@
   </div>
   <h2>Patients</h2>
 </div>
+<div *ngIf="!patients.length; else patientsTable">
+    <p>No patients yet, create new patient to start</p>
+  </div>
+  <ng-template #patientsTable>
+    <table class="table table-striped" >
+      <thead>
+        <th class="col-xs-5">Name</th>
+        <th class="col-xs-3" class="text-align-center">Birth Date</th>
+        <th class="col-xs-2" class="text-align-center">Gender</th>
+        <th class="col-xs-1"></th>
+        <th class="col-xs-1"></th>
+      </thead>
+      <tbody >
+        <tr *ngFor="let patient of patients">
+          <td>{{patient.lastName}}, {{patient.firstName}}</td>
+          <td class="text-align-center">{{patient.birthDate}}</td>
+          <td class="text-align-center">{{patient.gender}}</td>
+          <td>
+            <button class="btn btn-warning" type="button">
+              <span class="glyphicon glyphicon-pencil"></span>
+            </button>
+          </td>
+          <td>
+            <button class="btn btn-danger" type="button" (click)="onDelete(patient.id)">
+              <span class="glyphicon glyphicon-trash"></span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-template>
