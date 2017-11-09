@@ -6,6 +6,7 @@ import { Clinic } from 'app/clinics/clinics.model';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { Therapist } from 'app/therapists/therapist.model';
+import { Patient } from 'app/patients/patient.model';
 
 @Component({
   selector: 'app-clinic-edit',
@@ -17,6 +18,9 @@ export class ClinicEditComponent implements OnInit {
   clinic: Clinic;
   availableTherapists =  [];
   linkedTherapists =  [];
+
+  availablePatients =  [];
+  linkedPatients =  [];
 
   constructor(
     private clinicsService: ClinicsService, 
@@ -44,6 +48,14 @@ export class ClinicEditComponent implements OnInit {
           this.linkedTherapists = linkedTherapists;
         });
 
+        this.patientsService.getAll().subscribe((patients)=> {
+          let linkedPatients = patients.filter((p: Patient) =>  {
+            return clinic.patients.indexOf(p.id) > -1;
+          });
+          this.availablePatients = patients;
+          this.linkedPatients = linkedPatients;
+        });
+
       });    
     });
   }
@@ -53,6 +65,9 @@ export class ClinicEditComponent implements OnInit {
     this.clinic.address = form.value.address;
     this.clinic.therapists = this.linkedTherapists.map((t: Therapist) => {
       return t.id;
+    });
+    this.clinic.patients = this.linkedPatients.map((p: Patient) => {
+      return p.id;
     });
     this.clinicsService.put(this.clinic).subscribe((clinic)=> {
       console.log(clinic);

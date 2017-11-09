@@ -98,10 +98,17 @@ export class FakeHttp {
             const clinics_therapists = (JSON.parse(localStorage['clinics-therapists'])).filter((ct) => {
                 return ct.clinic_id === data;
             });
+            const clinics_patients = (JSON.parse(localStorage['clinics-patients'])).filter((cp) => {
+                return cp.clinic_id === data;
+            });
 
             clinics['therapists'] = clinics_therapists.map((ct)=> {
                 return ct.therapist_id;
             });
+            clinics['patients'] = clinics_patients.map((cp)=> {
+                return cp.patient_id;
+            });
+            
         }
         setTimeout(() => {
             getSubject.next(clinics);
@@ -126,16 +133,28 @@ export class FakeHttp {
         let newClinics = clinics.filter((c) => { return c.id !== data.id; });
 
         let clinics_therapists = JSON.parse(localStorage['clinics-therapists']);
+        let clinics_patients = JSON.parse(localStorage['clinics-patients']);
+
         let new_clinics_therapists = clinics_therapists.filter((ct) => { return ct.clinic_id !== data.id });
+        let new_clinics_patients = clinics_patients.filter((cp) => { return cp.clinic_id !== data.id });
+
         let clinics_therapists_to_add = data.therapists.map((t) => {
             return {clinic_id: data.id, therapist_id: t};
         });
+        let clinics_patients_to_add = data.patients.map((p) => {
+            return {clinic_id: data.id, patient_id: p};
+        });
+
         delete data.therapists;
+        delete data.patients;
+
         newClinics.push(data);
         new_clinics_therapists = new_clinics_therapists.concat(clinics_therapists_to_add);
+        new_clinics_patients = new_clinics_patients.concat(clinics_patients_to_add);
                 
         localStorage.setItem('clinics', JSON.stringify(newClinics));
         localStorage.setItem('clinics-therapists', JSON.stringify(new_clinics_therapists));
+        localStorage.setItem('clinics-patients', JSON.stringify(new_clinics_patients));
 
         setTimeout(() => {
             putSubject.next(data);
