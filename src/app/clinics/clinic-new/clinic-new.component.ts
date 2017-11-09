@@ -17,7 +17,6 @@ export class ClinicNewComponent implements OnInit {
 
   onSubmit(form: NgForm) {
     this.clinicsService.create(form.value).subscribe((response: any) => {
-      console.log("asdfasdf");
       this.router.navigate(["/clinics"]);
     });
   }

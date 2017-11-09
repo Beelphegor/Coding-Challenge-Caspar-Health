@@ -79,9 +79,9 @@ export class FakeHttp {
     //Fake server Implementations
     //CLINICS
     private createClinic(postSubject: Subject<any>, data: Clinic) {
-        let clinics = JSON.parse(localStorage['clinics']);
+        let clinics = JSON.parse(localStorage['jj-clinics']);
         clinics.push(new Clinic(data.name, data.address, (new Date()).getTime().toString()));
-        localStorage.setItem('clinics', JSON.stringify(clinics));
+        localStorage.setItem('jj-clinics', JSON.stringify(clinics));
         setTimeout(() => {
             postSubject.next(data);
             postSubject.complete();
@@ -89,16 +89,16 @@ export class FakeHttp {
     }
 
     private getClinics(getSubject: Subject<any>, data?: string) {
-        let clinics = JSON.parse(localStorage['clinics']).sort((a, b)=> { return a.id - b.id});
+        let clinics = JSON.parse(localStorage['jj-clinics']).sort((a, b)=> { return a.id - b.id});
         if(data) {
             clinics = clinics.filter((c) => {
                 return c.id === data;
             })[0];
             
-            const clinics_therapists = (JSON.parse(localStorage['clinics-therapists'])).filter((ct) => {
+            const clinics_therapists = (JSON.parse(localStorage['jj-clinics-therapists'])).filter((ct) => {
                 return ct.clinic_id === data;
             });
-            const clinics_patients = (JSON.parse(localStorage['clinics-patients'])).filter((cp) => {
+            const clinics_patients = (JSON.parse(localStorage['jj-clinics-patients'])).filter((cp) => {
                 return cp.clinic_id === data;
             });
 
@@ -117,11 +117,11 @@ export class FakeHttp {
     }
 
     private deleteClinics(deleteSubject: Subject<any>, data: string) {
-        let clinics: Clinic[] = JSON.parse(localStorage['clinics']);
+        let clinics: Clinic[] = JSON.parse(localStorage['jj-clinics']);
         let newClinics = clinics.filter((c) => {
             return c.id !== data;
         });
-        localStorage.setItem('clinics', JSON.stringify(newClinics));
+        localStorage.setItem('jj-clinics', JSON.stringify(newClinics));
         setTimeout(() => {
             deleteSubject.next(data);
             deleteSubject.complete();
@@ -129,11 +129,11 @@ export class FakeHttp {
     }
 
     private updateClinic(putSubject: Subject<any>, data: Clinic) {
-        let clinics = JSON.parse(localStorage['clinics']);
+        let clinics = JSON.parse(localStorage['jj-clinics']);
         let newClinics = clinics.filter((c) => { return c.id !== data.id; });
 
-        let clinics_therapists = JSON.parse(localStorage['clinics-therapists']);
-        let clinics_patients = JSON.parse(localStorage['clinics-patients']);
+        let clinics_therapists = JSON.parse(localStorage['jj-clinics-therapists']);
+        let clinics_patients = JSON.parse(localStorage['jj-clinics-patients']);
 
         let new_clinics_therapists = clinics_therapists.filter((ct) => { return ct.clinic_id !== data.id });
         let new_clinics_patients = clinics_patients.filter((cp) => { return cp.clinic_id !== data.id });
@@ -152,9 +152,9 @@ export class FakeHttp {
         new_clinics_therapists = new_clinics_therapists.concat(clinics_therapists_to_add);
         new_clinics_patients = new_clinics_patients.concat(clinics_patients_to_add);
                 
-        localStorage.setItem('clinics', JSON.stringify(newClinics));
-        localStorage.setItem('clinics-therapists', JSON.stringify(new_clinics_therapists));
-        localStorage.setItem('clinics-patients', JSON.stringify(new_clinics_patients));
+        localStorage.setItem('jj-clinics', JSON.stringify(newClinics));
+        localStorage.setItem('jj-clinics-therapists', JSON.stringify(new_clinics_therapists));
+        localStorage.setItem('jj-clinics-patients', JSON.stringify(new_clinics_patients));
 
         setTimeout(() => {
             putSubject.next(data);
@@ -164,9 +164,9 @@ export class FakeHttp {
 
     //PATIENTS    
     private createPatient(postSubject: Subject<any>, data) {
-        let patients = JSON.parse(localStorage['patients']).sort((a, b)=> { return a.id - b.id});
+        let patients = JSON.parse(localStorage['jj-patients']).sort((a, b)=> { return a.id - b.id});
         patients.push(new Patient(data.firstName, data.lastName, data.birthDate, data.gender, (new Date()).getTime().toString()));
-        localStorage.setItem('patients', JSON.stringify(patients));
+        localStorage.setItem('jj-patients', JSON.stringify(patients));
         setTimeout(() => {
             postSubject.next(data);
             postSubject.complete();
@@ -174,20 +174,20 @@ export class FakeHttp {
     }
 
     private getPatients(getSubject: Subject<any>, data?: string) {
-        let patients = JSON.parse(localStorage['patients']).sort((a, b)=> { return a.id - b.id});
+        let patients = JSON.parse(localStorage['jj-patients']).sort((a, b)=> { return a.id - b.id});
         if(data) {
             patients = patients.filter((c) => {
                 return c.id === data;
             })[0];
             
-            const therapists_patients = (JSON.parse(localStorage['therapists-patients'])).filter((tp) => {
+            const therapists_patients = (JSON.parse(localStorage['jj-therapists-patients'])).filter((tp) => {
                 return tp.patient_id === data;
             });
-            const clinics_patients = (JSON.parse(localStorage['clinics-patients'])).filter((cp) => {
+            const clinics_patients = (JSON.parse(localStorage['jj-clinics-patients'])).filter((cp) => {
                 return cp.patient_id === data;
             });
-            let allTherapists = JSON.parse(localStorage['therapists']);
-            let allClinics = JSON.parse(localStorage['clinics']);
+            let allTherapists = JSON.parse(localStorage['jj-therapists']);
+            let allClinics = JSON.parse(localStorage['jj-clinics']);
 
             patients['therapists'] = allTherapists.filter((t: Therapist) => {
                 return therapists_patients.map((tp) => {
@@ -207,11 +207,11 @@ export class FakeHttp {
     }
 
     private deletePatients(deleteSubject: Subject<any>, data: string) {
-        let patients: Patient[] = JSON.parse(localStorage['patients']);
+        let patients: Patient[] = JSON.parse(localStorage['jj-patients']);
         let newPatients = patients.filter((c) => {
             return c.id !== data;
         });
-        localStorage.setItem('patients', JSON.stringify(newPatients));
+        localStorage.setItem('jj-patients', JSON.stringify(newPatients));
         setTimeout(() => {
             deleteSubject.next(data);
             deleteSubject.complete();
@@ -219,12 +219,12 @@ export class FakeHttp {
     }
 
     private updatePatient(putSubject: Subject<any>, data: Patient) {
-        let patients: Patient[] = JSON.parse(localStorage['patients']);
+        let patients: Patient[] = JSON.parse(localStorage['jj-patients']);
         let newPatients = patients.filter((c) => {
             return c.id !== data.id;
         });
         newPatients.push(data);
-        localStorage.setItem('patients', JSON.stringify(newPatients));
+        localStorage.setItem('jj-patients', JSON.stringify(newPatients));
         setTimeout(() => {
             putSubject.next(data);
             putSubject.complete();
@@ -234,9 +234,9 @@ export class FakeHttp {
 
      //THERAPISTS    
      private createTherapist(postSubject: Subject<any>, data) {
-        let therapists = JSON.parse(localStorage['therapists']);
+        let therapists = JSON.parse(localStorage['jj-therapists']);
         therapists.push(new Therapist(data.firstName, data.lastName, data.birthDate, data.gender, (new Date()).getTime().toString()));
-        localStorage.setItem('therapists', JSON.stringify(therapists));
+        localStorage.setItem('jj-therapists', JSON.stringify(therapists));
         setTimeout(() => {
             postSubject.next(data);
             postSubject.complete();
@@ -245,13 +245,13 @@ export class FakeHttp {
 
     private getTherapists(getSubject: Subject<any>, data?: string) {
 
-        let therapists = JSON.parse(localStorage['therapists']).sort((a, b)=> { return a.id - b.id});
+        let therapists = JSON.parse(localStorage['jj-therapists']).sort((a, b)=> { return a.id - b.id});
         if(data) {
             therapists = therapists.filter((t) => {
                 return t.id === data;
             })[0];
 
-            const therapists_patients = (JSON.parse(localStorage['therapists-patients'])).filter((tp) => {
+            const therapists_patients = (JSON.parse(localStorage['jj-therapists-patients'])).filter((tp) => {
                 return tp.therapist_id === data;
             });
 
@@ -267,11 +267,11 @@ export class FakeHttp {
     }
 
     private deleteTherapists(deleteSubject: Subject<any>, data: string) {
-        let therapists: Therapist[] = JSON.parse(localStorage['therapists']);
+        let therapists: Therapist[] = JSON.parse(localStorage['jj-therapists']);
         let newTherapists = therapists.filter((c) => {
             return c.id !== data;
         });
-        localStorage.setItem('therapists', JSON.stringify(newTherapists));
+        localStorage.setItem('jj-therapists', JSON.stringify(newTherapists));
         setTimeout(() => {
             deleteSubject.next(data);
             deleteSubject.complete();
@@ -279,10 +279,10 @@ export class FakeHttp {
     }
 
     private updateTherapist(putSubject: Subject<any>, data: Therapist) {
-        let therapists = JSON.parse(localStorage['therapists']);
+        let therapists = JSON.parse(localStorage['jj-therapists']);
         let newTherapists = therapists.filter((c) => { return c.id !== data.id; });
 
-        let therapists_patients = JSON.parse(localStorage['therapists-patients']);
+        let therapists_patients = JSON.parse(localStorage['jj-therapists-patients']);
 
         let new_therapists_patients = therapists_patients.filter((tp) => { return tp.therapist_id !== data.id });
 
@@ -295,8 +295,8 @@ export class FakeHttp {
         newTherapists.push(data);
         new_therapists_patients = new_therapists_patients.concat(therapists_patients_to_add);
                 
-        localStorage.setItem('therapists', JSON.stringify(newTherapists));
-        localStorage.setItem('therapists-patients', JSON.stringify(new_therapists_patients));
+        localStorage.setItem('jj-therapists', JSON.stringify(newTherapists));
+        localStorage.setItem('jj-therapists-patients', JSON.stringify(new_therapists_patients));
 
         setTimeout(() => {
             putSubject.next(data);

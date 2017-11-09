@@ -33,7 +33,6 @@ export class ClinicEditComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe((params: Params) =>  {
       this.clinicsService.get(params['id']).subscribe((clinic: Clinic) => {
-        console.log(clinic);
         this.clinic = clinic;
         this.form.setValue({
           name: clinic.name,
@@ -70,7 +69,6 @@ export class ClinicEditComponent implements OnInit {
       return p.id;
     });
     this.clinicsService.put(this.clinic).subscribe((clinic)=> {
-      console.log(clinic);
       this.router.navigate(['/clinics']);
     });
   }

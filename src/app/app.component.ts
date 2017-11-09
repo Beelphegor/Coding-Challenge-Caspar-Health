@@ -7,13 +7,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   constructor() {
-    if(!localStorage.getItem('clinics')) {
-      localStorage.setItem('clinics', JSON.stringify([]));
-      localStorage.setItem('therapists', JSON.stringify([]));
-      localStorage.setItem('patients', JSON.stringify([]));
-      localStorage.setItem('clinics-patients', JSON.stringify([]));
-      localStorage.setItem('clinics-therapists', JSON.stringify([]));
-      localStorage.setItem('therapists-patients', JSON.stringify([]));
+    if(!localStorage.getItem('jj-clinics')) {
+      localStorage.setItem('jj-clinics', JSON.stringify([]));
+      localStorage.setItem('jj-therapists', JSON.stringify([]));
+      localStorage.setItem('jj-patients', JSON.stringify([]));
+      localStorage.setItem('jj-clinics-patients', JSON.stringify([]));
+      localStorage.setItem('jj-clinics-therapists', JSON.stringify([]));
+      localStorage.setItem('jj-therapists-patients', JSON.stringify([]));
     }
   }
 }

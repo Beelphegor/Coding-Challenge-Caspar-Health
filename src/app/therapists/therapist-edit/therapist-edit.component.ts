@@ -27,8 +27,7 @@ export class TherapistEditComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) =>  {
-      this.therapistsService.get(params['id']).subscribe((therapist: Therapist) => {//fix service
-        console.log(therapist);
+      this.therapistsService.get(params['id']).subscribe((therapist: Therapist) => {
         this.therapist = therapist;
         this.form.setValue({
           firstName: therapist.firstName,
@@ -60,7 +59,6 @@ export class TherapistEditComponent implements OnInit {
     });
 
     this.therapistsService.put(this.therapist).subscribe((therapist)=> {
-      console.log(therapist);
       this.router.navigate(['/therapists']);
     })
     

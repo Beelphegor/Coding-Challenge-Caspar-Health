@@ -48,7 +48,6 @@ export class PatientEditComponent implements OnInit {
     this.patient.fullName = `${form.value.lastName}, ${form.value.firstName}`
 
     this.patientsService.put(this.patient).subscribe((patient) => {
-      console.log(patient);
       this.router.navigate(['/patients']);
     });
   }
