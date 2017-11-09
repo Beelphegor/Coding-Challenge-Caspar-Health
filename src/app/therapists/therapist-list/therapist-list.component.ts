@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Therapist } from 'app/therapists/therapist.model';
+import { TherapistsService } from 'app/therapists/therapists.service';
 
 @Component({
   selector: 'app-therapist-list',
@@ -6,10 +8,23 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./therapist-list.component.css']
 })
 export class TherapistListComponent implements OnInit {
+  therapists: Therapist[] = [];
 
-  constructor() { }
+  constructor(private therapistsService: TherapistsService) { }
 
   ngOnInit() {
+    this.gettherapists();
   }
 
+  gettherapists() {
+    this.therapistsService.getAll().subscribe((therapists) => {
+      this.therapists = therapists;
+    });
+  }
+
+  onDelete(id: string) {
+    this.therapistsService.delete(id).subscribe((response) => {
+      this.gettherapists();
+    })
+  }
 }

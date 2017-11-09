@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { TherapistsService } from 'app/therapists/therapists.service';
+import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-therapist-new',
@@ -7,9 +10,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TherapistNewComponent implements OnInit {
 
-  constructor() { }
-
-  ngOnInit() {
-  }
+  
+  constructor( private therapistsService: TherapistsService, private router: Router) { }
+  
+    ngOnInit() {
+    }
+  
+    onSubmit(form: NgForm) {
+      this.therapistsService.create(form.value).subscribe((therapist) => {
+        this.router.navigate(['/therapists']);
+      });
+    }
 
 }
